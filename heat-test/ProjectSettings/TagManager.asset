@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Coal
   - Furnace
+  - Salt
   layers:
   - Default
   - TransparentFX
@@ -13,7 +14,7 @@ TagManager:
   - Player
   - Water
   - UI
-  - Coal
+  - Mineables
   - Furnace
   - 
   - 

@@ -12,13 +12,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpHeatMod;
     [SerializeField] private float moveHeatMod;
 
-    [Header("Coal and Furnace")]
+    [Header("Mineables and Furnace")]
+
     [SerializeField] public TextMeshProUGUI coalCounterText;
     private float coalNum = 0f;
     [SerializeField] public float coalIncrement = 10f;
+    [SerializeField] CoalController coalController;
+
+    [SerializeField] public TextMeshProUGUI saltCounterText;
+    [SerializeField] public float saltIncrement = 10f;
+    [SerializeField] SaltController saltController;
+    private float saltNum = 0f;
+
     [SerializeField] public GameObject furnace;
     [SerializeField] ProgressBarController progress;
-    [SerializeField] CoalController coalController;
+
+
+
 
     [Header("Misc")]
     [SerializeField] public bool hasDrill = false;
@@ -101,6 +111,8 @@ public class PlayerController : MonoBehaviour
 
         //Coal number
         coalCounterText.SetText($"{coalNum.ToString()}");
+        saltCounterText.SetText($"{saltNum.ToString()}");
+
 
         //Heat meter reduction
         if (velocity.y > 0.01f)
@@ -119,20 +131,29 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider other)
     {
         Debug.Log("Collision works");
 
         //Pick up coal
-        if (collision.gameObject.CompareTag("Coal") && hasPick == true)
+        if (other.gameObject.CompareTag("Coal") && hasPick == true)
         {
             Debug.Log("Coal tag works");
             coalNum += coalIncrement;
             coalController.totalCoal -= coalIncrement;
         }
 
+        //Pick up salt
+        if (other.gameObject.CompareTag("Salt") && hasPick == true)
+        {
+            Debug.Log("Salt tag works");
+            saltNum += saltIncrement;
+            saltController.totalSalt -= saltIncrement;
+        }
+
+
         //Deposit coal in furnace, refill heat meter and upgrade meter max by how much coal is deposited
-        if (collision.gameObject.CompareTag("Furnace"))
+        if (other.gameObject.CompareTag("Furnace"))
         {
             Debug.Log("Furance tag works");
             if (coalNum > 0)
@@ -146,7 +167,4 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-
-
-
 }

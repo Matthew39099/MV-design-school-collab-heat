@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class CoalController : MonoBehaviour
+public class SaltController : MonoBehaviour
 {
-    [SerializeField] public float totalCoal;
+    [SerializeField] public float totalSalt;
 
-    public static CoalController Instance;
+    public static SaltController Instance;
 
     private void Awake()
     {
@@ -20,14 +20,14 @@ public class CoalController : MonoBehaviour
 
     void Update()
     {
-        if(totalCoal <= 0)
+        if (totalSalt <= 0)
         {
-            Debug.Log("0 Coal Left");
+            Debug.Log("0 Salt Left");
             Destroy(gameObject);
         }
     }
 
-    void Coal()
+    void Salt()
     {
         //Player picks up coal
     }

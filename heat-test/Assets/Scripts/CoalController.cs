@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class CoalController : MonoBehaviour
@@ -5,6 +6,7 @@ public class CoalController : MonoBehaviour
     [SerializeField] public float totalCoal;
 
     public static CoalController Instance;
+
 
     void Update()
     {
@@ -15,8 +17,4 @@ public class CoalController : MonoBehaviour
         }
     }
 
-    void Coal()
-    {
-        //Player picks up coal
-    }
 }

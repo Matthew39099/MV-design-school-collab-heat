@@ -1,37 +1,33 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WaterController : MonoBehaviour
 {
-    GameObject waterWarning;
-    private bool inWater = false;
+    Image waterWarning;
+
     void Awake()
     {
-        waterWarning = GameObject.FindWithTag("DamageWarning");
+        waterWarning = GameObject.FindWithTag("DamageWarning").GetComponent<Image>();
+        if (waterWarning == null)
+            Debug.LogError("No Image component found on WaterWarning object!");
+        waterWarning.color = new Color(0.86f, 0.08f, 0.24f, 0f); // start fully transparent
     }
-    void Update()
-    {
-        if (inWater)
-        {
-            ProgressBarController.Instance.Decrease(Time.deltaTime * 2f);
-        }
-    }
+
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collision with water");
-        if(other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player hit water");
-            inWater = true;
-            waterWarning.SetActive(true);
+            ProgressBarController.Instance.Decrease(Time.deltaTime * 2f);
+            waterWarning.color = new Color(0.86f, 0.08f, 0.24f, 0.5f); // fully visible
         }
     }
+
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            inWater = false;
-            waterWarning.SetActive(false);
+            waterWarning.color = new Color(0.86f, 0.08f, 0.24f, 0f); // fully transparent
         }
     }
-    
 }

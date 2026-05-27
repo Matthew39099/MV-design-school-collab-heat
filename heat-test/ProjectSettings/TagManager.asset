@@ -9,6 +9,8 @@ TagManager:
   - Salt
   - FurnaceRoom
   - CavernsArea
+  - Water
+  - DamageWarning
   layers:
   - Default
   - TransparentFX

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Player movement")]
-    [SerializeField] private float speed = 5f;
+    [SerializeField] public float speed = 5f;
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private float gravity = -9.8f;
     [SerializeField] private float jumpHeatMod;
@@ -15,14 +15,14 @@ public class PlayerController : MonoBehaviour
     [Header("Mineables and Furnace")]
 
     [SerializeField] public TextMeshProUGUI coalCounterText;
-    private float coalNum = 0f;
+    public float coalNum = 0f;
     [SerializeField] public float coalIncrement = 10f;
     [SerializeField] CoalController coalController;
 
     [SerializeField] public TextMeshProUGUI saltCounterText;
     [SerializeField] public float saltIncrement = 10f;
     [SerializeField] SaltController saltController;
-    private float saltNum = 0f;
+    public float saltNum = 0f;
 
     [SerializeField] public GameObject furnace;
     [SerializeField] ProgressBarController progress;

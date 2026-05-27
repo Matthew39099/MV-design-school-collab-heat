@@ -22,10 +22,14 @@ public class ProgressBarController : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
+        Debug.Log($"ProgressBar Awake on {gameObject.name}");
     }
 
     void Start()
     {
+        Debug.Log($"Start Value = {startValue}");
+        Debug.Log($"Current Value BEFORE = {CurrentValue}");
         CurrentValue = startValue;
         BarUpdate?.Invoke();
         UpdateBar();
@@ -62,6 +66,7 @@ public class ProgressBarController : MonoBehaviour
         CurrentValue -= amount;
         CurrentValue = Mathf.Max(0, CurrentValue);
         BarUpdate?.Invoke();
+        Debug.Log($"Decrease called with {amount}");
     }
 
     // Directly set the current value (useful for timers driven by Time.deltaTime)
@@ -69,6 +74,7 @@ public class ProgressBarController : MonoBehaviour
     {
         CurrentValue = Mathf.Clamp(value, 0, maxValue);
         BarUpdate?.Invoke();
+        Debug.Log($"SetValue called with {value}");
     }
 
     // Reset back to the start value

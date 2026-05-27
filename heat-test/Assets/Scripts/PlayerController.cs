@@ -71,6 +71,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+        Debug.Log($"Current Heat: {progress.CurrentValue}");
+        Debug.Log($"Max Heat: {progress.maxValue}");
+        Debug.Log($"Light Intensity: {flame.intensity}");
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -249,6 +253,7 @@ public class PlayerController : MonoBehaviour
     {
         flame.intensity = (progress.CurrentValue / progress.maxValue) * 50;
         flame.range = (progress.CurrentValue / progress.maxValue) * 50;
+
 
         if (flame.intensity <= 0)
         {

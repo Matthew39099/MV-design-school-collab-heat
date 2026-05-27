@@ -245,6 +245,7 @@ public class PlayerController : MonoBehaviour
 
             if (coalNum > 0)
             {
+                AudioController.Instance.PlaySound("skillTreeOpen");
                 progress.Increase(coalNum);
                 coalNum = 0f;
             }

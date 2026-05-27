@@ -14,6 +14,7 @@ public class UpgradeController : MonoBehaviour
         }
         else
         {
+            AudioController.Instance.PlaySound("skillUpgrade");
             playerController.saltNum -= 50f;
             playerController.speed += 5f;
         Debug.Log("Movement Upgrade Purchased! Current Speed: " + playerController.speed);
@@ -21,6 +22,7 @@ public class UpgradeController : MonoBehaviour
     }
     public void closeUpgrade()
     {
+        AudioController.Instance.PlaySound("skillTreeClose");
         upgradeCanvas.SetActive(false);
     }
 }

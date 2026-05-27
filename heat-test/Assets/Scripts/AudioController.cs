@@ -83,10 +83,10 @@ public class AudioController : MonoBehaviour
                 sfxSource.PlayOneShot(skillUpgrade);
                 break;
             case "skillTreeOpen":
-                sfxSource.PlayOneShot(skillTreeOpen);
+                sfxSource.PlayOneShot(skillTreeOpen, 2f);
                 break;
             case "skillTreeClose":
-                sfxSource.PlayOneShot(skillTreeClose);
+                sfxSource.PlayOneShot(skillTreeClose, 2f);
                 break;
             case "uiButton":
                 sfxSource.PlayOneShot(uiButton);

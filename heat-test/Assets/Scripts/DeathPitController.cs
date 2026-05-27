@@ -1,27 +1,43 @@
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeathPitController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private Transform spawnPoint;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        // Find the respawn point in the scene
+        GameObject respawnObject = GameObject.FindGameObjectWithTag("Respawn");
+
+        if (respawnObject != null)
+        {
+            spawnPoint = respawnObject.transform;
+        }
+        else
+        {
+            Debug.LogError("No object with tag 'Respawn' found.");
+        }
     }
 
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("Player"))
         {
-            collision.transform.position = new Vector3(4, 0, 4);
+            CharacterController controller = collision.GetComponent<CharacterController>();
+
+            if (controller != null && spawnPoint != null)
+            {
+                // Disable controller before teleporting
+                controller.enabled = false;
+
+                // Move player to respawn point
+                collision.transform.position = spawnPoint.position;
+
+                // Re-enable controller
+                controller.enabled = true;
+
+                Debug.Log("Respawn");
+            }
         }
     }
-
 }

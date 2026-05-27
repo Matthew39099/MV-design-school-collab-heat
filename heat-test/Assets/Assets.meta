@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 1ee552a92a3bb784b9eef97db8eb0c15
+<<<<<<<< HEAD:heat-test/Assets/Asset Packs.meta
+guid: ca3162ce4bf73444b904bcc8fd9d200a
+========
+guid: b287fa6eaf7508d4182b0422eebd5168
+>>>>>>>> zb-heat-working:heat-test/Assets/Assets.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

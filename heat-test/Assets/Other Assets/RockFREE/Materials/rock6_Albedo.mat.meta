@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 04ea72a61eb1d9e479c7988085871e45
+timeCreated: 1496217418
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 98219
+  packageName: Rocks FREE pack
+  packageVersion: 1.0
+  assetPath: Assets/RockFREE/Materials/rock6_Albedo.mat
+  uploadId: 204385

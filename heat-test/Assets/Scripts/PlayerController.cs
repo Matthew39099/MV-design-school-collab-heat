@@ -18,17 +18,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public TextMeshProUGUI coalCounterText;
     private float coalNum = 0f;
     [SerializeField] public float coalIncrement = 10f;
-    [SerializeField] CoalController coalController;
 
     [SerializeField] public TextMeshProUGUI saltCounterText;
     [SerializeField] public float saltIncrement = 10f;
-    [SerializeField] SaltController saltController;
     private float saltNum = 0f;
 
     [SerializeField] public GameObject furnace;
     [SerializeField] ProgressBarController progress;
 
-
+    [SerializeField] public GameObject minePrompt;
 
 
     [Header("Misc")]
@@ -37,6 +35,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public bool hasPick = false;
     [SerializeField] public GameObject pick;
     [SerializeField] public Light flame;
+    bool isInRange = false;
+
+    private Collider currentInteractable;
 
     private CharacterController controller;
     private Vector3 moveInput;
@@ -81,6 +82,54 @@ public class PlayerController : MonoBehaviour
             AudioController.Instance.PlaySound("playerJump");
             Debug.Log("Jumped!");
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        Debug.Log("Hit Interact Button");
+
+        if (!context.performed) return;
+
+        if (currentInteractable == null)
+        {
+            return;
+        }
+
+        //Coal
+        if (currentInteractable.CompareTag("Coal") && hasPick && isInRange)
+        {
+            coalNum += coalIncrement;
+            CoalController coalController = currentInteractable.GetComponent<CoalController>();
+            coalController.totalCoal -= coalIncrement;
+
+            if (coalController.totalCoal <= 0)
+            {
+                minePrompt.SetActive(false);
+            }
+        }
+
+        //Salt
+        else if (currentInteractable.CompareTag("Salt") && hasPick && isInRange)
+        {
+            saltNum += saltIncrement;
+            SaltController saltController = currentInteractable.GetComponent<SaltController>();
+            saltController.totalSalt -= coalIncrement; 
+
+            if (saltController.totalSalt <= 0)
+            {
+                minePrompt.SetActive(false);
+            }
+        }
+
+        //Furnace
+        else if (currentInteractable.CompareTag("Furnace"))
+        {
+            if (coalNum > 0)
+            {
+                progress.Increase(coalNum);
+                coalNum = 0f;
+            }
         }
     }
 
@@ -137,8 +186,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collision works");
-
         //Pick up coal
         if (other.gameObject.CompareTag("Coal") && hasPick == true)
         {
@@ -161,7 +208,8 @@ public class PlayerController : MonoBehaviour
         //Deposit coal in furnace, refill heat meter and upgrade meter max by how much coal is deposited
         if (other.gameObject.CompareTag("Furnace"))
         {
-            Debug.Log("Furance tag works");
+            currentInteractable = other;
+
             if (coalNum > 0)
             {
                 AudioController.Instance.PlaySound("furnaceEnter");
@@ -170,6 +218,8 @@ public class PlayerController : MonoBehaviour
                 progress.ResetBar();
                 coalNum = 0f;
             }
+        }
+    }
 
         }
 
@@ -195,11 +245,29 @@ public class PlayerController : MonoBehaviour
         {
             AudioController.Instance.StopSound("furnaceRoom");
         }
+
+        if (other.gameObject.CompareTag("Salt"))
+        {
+            minePrompt.SetActive(false);
+            isInRange = false;
+
+        }
     }
 
+    void Die()
+    {
+        PlayerController.Instance.gameObject.SetActive(false);
+    }
+
+    //Updates the light based on heat level. If gets to 0, dies.
     void updateLight()
     {
         flame.intensity = (progress.CurrentValue / progress.maxValue) * 50;
         flame.range = (progress.CurrentValue / progress.maxValue) * 50;
+
+        if (flame.intensity <= 0)
+        {
+            Die();
+        }
     }
 }

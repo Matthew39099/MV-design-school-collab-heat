@@ -164,7 +164,11 @@ public class PlayerController : MonoBehaviour
                 coalNum = 0f;
             }
 
-
+            //take double damage from the water and flash a red warning from the screen
+            if (other.gameObject.CompareTag("Water"))
+            {
+                
+            }
         }
     }
 }

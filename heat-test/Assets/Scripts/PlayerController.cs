@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Player movement")]
-    [SerializeField] private float speed = 5f;
+    [SerializeField] public float speed = 5f;
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private float gravity = -9.8f;
     [SerializeField] private float jumpHeatMod;
@@ -15,12 +15,16 @@ public class PlayerController : MonoBehaviour
     [Header("Mineables and Furnace")]
 
     [SerializeField] public TextMeshProUGUI coalCounterText;
-    private float coalNum = 0f;
+    public float coalNum = 0f;
     [SerializeField] public float coalIncrement = 10f;
 
     [SerializeField] public TextMeshProUGUI saltCounterText;
     [SerializeField] public float saltIncrement = 10f;
-    private float saltNum = 0f;
+    [SerializeField] SaltController saltController;
+    public float saltNum = 0f;
+
+    [SerializeField] public TextMeshProUGUI pickText;
+    [SerializeField] public TextMeshProUGUI drillText;
 
     [SerializeField] public GameObject furnace;
     [SerializeField] ProgressBarController progress;
@@ -33,6 +37,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject drill;
     [SerializeField] public bool hasPick = false;
     [SerializeField] public GameObject pick;
+    [SerializeField] public GameObject redWarning;
     [SerializeField] public Light flame;
     bool isInRange = false;
 
@@ -56,11 +61,13 @@ public class PlayerController : MonoBehaviour
 
         if (!hasDrill)
         {
+            drillText.text = "No Drill!";
             drill.SetActive(false);
         }
 
         if (!hasPick)
         {
+            pickText.text = "No Pick!";
             pick.SetActive(false);
         }
     }
@@ -68,6 +75,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+        Debug.Log($"Current Heat: {progress.CurrentValue}");
+        Debug.Log($"Max Heat: {progress.maxValue}");
+        Debug.Log($"Light Intensity: {flame.intensity}");
         animator = GetComponent<Animator>();
     }
 
@@ -139,12 +150,14 @@ public class PlayerController : MonoBehaviour
     {
         hasDrill = true;
         drill.SetActive(true);
+        drillText.text = "Drill!";
         Debug.Log("Drill is true");
     }
 
     public void PickUpPick()
     {
         hasPick = true;
+        pickText.text = "Pick!";
         pick.SetActive(true);
     }
 
@@ -261,9 +274,11 @@ public class PlayerController : MonoBehaviour
         flame.intensity = (progress.CurrentValue / progress.maxValue) * 50;
         flame.range = (progress.CurrentValue / progress.maxValue) * 50;
 
+
         if (flame.intensity <= 0)
         {
             Die();
         }
     }
+
 }

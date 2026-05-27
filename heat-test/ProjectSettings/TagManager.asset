@@ -7,6 +7,10 @@ TagManager:
   - Coal
   - Furnace
   - Salt
+  - FurnaceRoom
+  - CavernsArea
+  - Water
+  - DamageWarning
   layers:
   - Default
   - TransparentFX

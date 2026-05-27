@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class SaltController : MonoBehaviour
@@ -6,18 +7,6 @@ public class SaltController : MonoBehaviour
 
     public static SaltController Instance;
 
-    private void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-        {
-            Debug.Log("Else");
-            Destroy(gameObject);
-        }
-
-    }
-
     void Update()
     {
         if (totalSalt <= 0)
@@ -25,10 +14,5 @@ public class SaltController : MonoBehaviour
             Debug.Log("0 Salt Left");
             Destroy(gameObject);
         }
-    }
-
-    void Salt()
-    {
-        //Player picks up coal
     }
 }

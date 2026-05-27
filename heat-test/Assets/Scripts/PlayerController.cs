@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -36,7 +35,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject drill;
     [SerializeField] public bool hasPick = false;
     [SerializeField] public GameObject pick;
-    [SerializeField] public Light flame;
+    [SerializeField] public GameObject redWarning;
 
     private CharacterController controller;
     private Vector3 moveInput;
@@ -76,9 +75,8 @@ public class PlayerController : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         //Debug.Log($"Jumping: {context.performed} - Is Grounded: {controller.isGrounded}");
-        if(context.performed && controller.isGrounded)
+        if (context.performed && controller.isGrounded)
         {
-            AudioController.Instance.PlaySound("playerJump");
             Debug.Log("Jumped!");
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
@@ -122,7 +120,6 @@ public class PlayerController : MonoBehaviour
         {
             //Jump makes it decrease faster
             progress.Decrease(Time.deltaTime * jumpHeatMod);
-            
         }
         else if (moveInput.sqrMagnitude > 0.01f)
         {
@@ -130,8 +127,8 @@ public class PlayerController : MonoBehaviour
             progress.Decrease(Time.deltaTime * moveHeatMod);
         }
 
-        updateLight();
-        
+
+
     }
 
 
@@ -142,7 +139,6 @@ public class PlayerController : MonoBehaviour
         //Pick up coal
         if (other.gameObject.CompareTag("Coal") && hasPick == true)
         {
-            AudioController.Instance.PlaySound("oreMining");
             Debug.Log("Coal tag works");
             coalNum += coalIncrement;
             coalController.totalCoal -= coalIncrement;
@@ -151,7 +147,6 @@ public class PlayerController : MonoBehaviour
         //Pick up salt
         if (other.gameObject.CompareTag("Salt") && hasPick == true)
         {
-            AudioController.Instance.PlaySound("oreMining");
             Debug.Log("Salt tag works");
             saltNum += saltIncrement;
             saltController.totalSalt -= saltIncrement;
@@ -164,47 +159,13 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Furance tag works");
             if (coalNum > 0)
             {
-                AudioController.Instance.PlaySound("furnaceEnter");
                 Debug.Log("Player has coal");
                 progress.maxValue += coalNum;
                 progress.ResetBar();
                 coalNum = 0f;
             }
 
-            //take double damage from the water and flash a red warning from the screen
-            if (other.gameObject.CompareTag("Water"))
-            {
-                
-            }
-        }
-
-        // Furnace room box collider, turn on room ambience
-        if (other.gameObject.CompareTag("FurnaceRoom"))
-        {
-            AudioController.Instance.PlaySound("furnaceRoom");
-            Debug.Log("Furnace room collider works");
-        }
-        // Caverns Area box collider for ambience on
-        if (other.gameObject.CompareTag("CavernsArea"))
-        {
-            AudioController.Instance.PlaySound("cavernsArea");
-            Debug.Log("Caverns room collider works");
-        }
-        
-    }
-
-     public void OnTriggerExit(Collider other)
-    {
-        // Leave Furnace room 
-        if (other.gameObject.CompareTag("FurnaceRoom"))
-        {
-            AudioController.Instance.StopSound("furnaceRoom");
         }
     }
 
-    void updateLight()
-    {
-        flame.intensity = (progress.CurrentValue / progress.maxValue) * 50;
-        flame.range = (progress.CurrentValue / progress.maxValue) * 50;
-    }
 }

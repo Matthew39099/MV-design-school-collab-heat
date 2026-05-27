@@ -1,5 +1,5 @@
 using UnityEngine;
-
+ 
 public class CoalController : MonoBehaviour
 {
     [SerializeField] public float totalCoal;
@@ -8,7 +8,7 @@ public class CoalController : MonoBehaviour
 
     void Update()
     {
-        if(totalCoal <= 0)
+        if (totalCoal <= 0)
         {
             Debug.Log("0 Coal Left");
             Destroy(gameObject);

@@ -3,12 +3,13 @@ using UnityEngine;
 public class DeathPitController : MonoBehaviour
 {
     private Transform spawnPoint;
+    private SafeGroundSaver safeGroundSaver;
 
     private void Start()
     {
         // Find the respawn point in the scene
         GameObject respawnObject = GameObject.FindGameObjectWithTag("Respawn");
-
+        safeGroundSaver = GetComponent<SafeGroundSaver>();
         if (respawnObject != null)
         {
             spawnPoint = respawnObject.transform;
@@ -31,7 +32,7 @@ public class DeathPitController : MonoBehaviour
                 controller.enabled = false;
 
                 // Move player to respawn point
-                collision.transform.position = spawnPoint.position;
+                safeGroundSaver.WarpPlayerToSafeGround();
 
                 // Re-enable controller
                 controller.enabled = true;

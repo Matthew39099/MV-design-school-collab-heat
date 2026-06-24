@@ -12,6 +12,7 @@ TagManager:
   - Water
   - DamageWarning
   - Ground
+  - Mini Map
   layers:
   - Default
   - TransparentFX

@@ -1,33 +1,36 @@
 using UnityEngine;
-using System.Collections;
 
 public class GroundCheck : MonoBehaviour
 {
-    [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private float extraHeight = 0.25f;
+    [SerializeField] private LayerMask whatIsGround;
 
-    private RaycastHit groundHit;
-    private CapsuleCollider coll;
+    private CharacterController cc;
 
     void Start()
     {
-        coll = GetComponent<CapsuleCollider>();
+        cc = GetComponent<CharacterController>();
     }
 
     public bool isGrounded()
     {
-        // Calculate the two sphere centres that define the capsule shape
-        Vector3 point1 = coll.bounds.center + Vector3.up * (coll.height / 2 - coll.radius);
-        Vector3 point2 = coll.bounds.center - Vector3.up * (coll.height / 2 - coll.radius);
+        // Account for lossy scale since CharacterController values are unscaled
+        float scaledRadius = cc.radius * transform.lossyScale.x;
+        float scaledHeight = cc.height * transform.lossyScale.y;
 
-        Physics.CapsuleCast(point1, point2, coll.radius, Vector3.down, out groundHit, extraHeight, whatIsGround);
-        if (groundHit.collider != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        Vector3 feetPos = transform.position + cc.center - Vector3.up * (scaledHeight / 2 - scaledRadius);
+
+        bool hit = Physics.SphereCast(
+            feetPos,
+            scaledRadius * 0.9f,
+            Vector3.down,
+            out RaycastHit groundHit,
+            extraHeight,
+            whatIsGround
+        );
+
+        Debug.DrawRay(feetPos, Vector3.down * (extraHeight + scaledRadius), hit ? Color.green : Color.red, 0.1f);
+        Debug.Log($"Feet pos: {feetPos} | Scaled radius: {scaledRadius} | Hit: {hit}");
+        return hit;
     }
 }
